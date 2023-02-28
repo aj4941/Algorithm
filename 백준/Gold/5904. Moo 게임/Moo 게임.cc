@@ -9,45 +9,32 @@ typedef vector<vector<ll>> vll;
 int dx[4] = { -1, 0, 0, 1 };
 int dy[4] = { 0, -1, 1, 0 };
 ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
+int n;
 
-void move(ll& a, ll& b, ll& c)
+void dfs(int x, int y)
 {
-	b--;
-	a = c = (a - b) / 2;
+	int len = 2 * x + y;
+	if (len < n)
+	{
+		dfs(len, y + 1);
+		return;
+	}
+	if (x < n && n <= x + y)
+	{
+		if (n == x + 1) cout << 'm';
+		else cout << 'o';
+		return;
+	}
+	else
+	{
+		n -= (x + y);
+		dfs(0, 3);
+	}
 }
-
 int main(void)
 {
 	ios::sync_with_stdio(0);
 	cin.tie(0), cout.tie(0);
-	ll n; cin >> n;
-	if (n <= 3)
-	{
-		if (n == 1) cout << 'm';
-		else cout << 'o';
-		return 0;
-	}
-	ll a = 0, b = 3, c = 0;
-	while (a + b + c < n)
-	{
-		a = c = (a + b + c);
-		b++;
-	}
-	
-	while (true)
-	{
-		if (n <= a) move(a, b, c);
-		else if (a < n && n <= a + b)
-		{
-			n -= a;
-			if (n == 1) cout << 'm';
-			else cout << 'o';
-			return 0;
-		}
-		else
-		{
-			n -= (a + b);
-			move(a, b, c);
-		}
-	}
+	cin >> n;
+	dfs(0, 3);
 }
