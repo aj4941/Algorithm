@@ -5,7 +5,7 @@ typedef pair<int, int> pii;
 
 int solution(vector<int> f, ll k) 
 {
-    vector<pii> v; k++;
+    vector<pii> v;
     for (int i = 0; i < f.size(); i++)
         v.push_back({ f[i], i + 1 });
     
@@ -14,15 +14,16 @@ int solution(vector<int> f, ll k)
     
     for (int i = 0; i < v.size(); i++)
     {
+        // k : 0-index
         ll d = v[i].first - cur;
         ll mv = d * len;
-        if (k <= mv)
+        if (k < mv)
         {
             vector<int> res;
             for (int j = i; j < v.size(); j++)
                 res.push_back(v[j].second);
             sort(res.begin(), res.end());
-            return res[(k - 1) % len];
+            return res[k % len];
         }
         else
         {
