@@ -17,24 +17,22 @@ int main(void)
 	ios::sync_with_stdio(0);
 	cin.tie(0), cout.tie(0);
 	int n, L; cin >> n >> L; L--;
-	vector<int> a(n + 1);
-	for (int i = 1; i <= n; i++) cin >> a[i];
+	vector<int> a(n);
+	for (int i = 0; i < n; i++) cin >> a[i];
+
 	sort(a.begin(), a.end());
 
-	int idx = 1, ans = 0;
+	int cnt = 1, st = a[0];
 
-	while (idx <= n)
+	for (int i = 1; i < n; i++)
 	{
-		int ed = a[idx] + L;
-		int nidx = idx + 1;
-		for (int i = nidx; i <= n; i++)
+		int d = a[i] - st;
+		if (d > L)
 		{
-			if (a[i] > ed) break;
-			nidx = i + 1;
+			cnt++;
+			st = a[i];
 		}
-		ans++;
-		idx = nidx;
 	}
 
-	cout << ans;
+	cout << cnt;
 }
