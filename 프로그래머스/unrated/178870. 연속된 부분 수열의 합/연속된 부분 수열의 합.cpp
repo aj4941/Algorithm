@@ -30,9 +30,8 @@ vector<int> solution(vector<int> a, int k)
         }
         else
         {
-            sum -= a[l];
-            l++;
-            if (l > r) r = l;
+            sum -= a[l++];
+            if (l > r) r = l, sum = a[r];
             if (r == n) break;
         }
         
