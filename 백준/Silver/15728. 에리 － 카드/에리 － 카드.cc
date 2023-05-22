@@ -11,38 +11,43 @@ typedef tuple<int, int, int> ti;
 int dx[4] = { -1, 0, 1, 0 };
 int dy[4] = { 0, 1, 0, -1 };
 ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
+const int N = 200;
+int cnt[N];
 
 int main(void)
 {
 	ios::sync_with_stdio(0);
 	cin.tie(0), cout.tie(0);
-	ll n, k; cin >> n >> k;
-	vector<ll> a(n), b(n);
-	for (ll i = 0; i < n; i++) cin >> a[i];
-	for (ll i = 0; i < n; i++) cin >> b[i];
-	vector<pll> v;
+	int n, k; cin >> n >> k;
+	vector<int> a(n), b(n);
+	for (int i = 0; i < n; i++) cin >> a[i];
+	for (int i = 0; i < n; i++) cin >> b[i];
 
-	for (ll i = 0; i < n; i++) for (ll j = 0; j < n; j++)		
-		v.push_back({ a[i] * b[j], j });
+	vector<pii> tmp;
 
-	sort(v.rbegin(), v.rend());
+	for (int i = 0; i < n; i++)
+	{
+		for (int j = 0; j < n; j++)
+			tmp.push_back({ a[i] * b[j], j });
+	}
+
+	sort(tmp.rbegin(), tmp.rend());
 
 	ll ans = -1;
-	map<ll, ll> mp;
 
-	for (auto to : v)
+	for (auto to : tmp)
 	{
-		ll idx = to.second;
-		if (mp[idx] == 0)
+		int idx = to.second;
+		if (cnt[idx] == 0)
 		{
-			mp[idx] = 1;
+			cnt[idx] = 1;
 			k--;
-		}
 
-		if (k < 0)
-		{
-			ans = to.first;
-			break;
+			if (k < 0)
+			{
+				ans = to.first;
+				break;
+			}
 		}
 	}
 
