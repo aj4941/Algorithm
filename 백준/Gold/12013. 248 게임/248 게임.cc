@@ -37,7 +37,7 @@ int main(void)
 			{
 				if (dp[i][k] == -1 || dp[k + 1][i + sz] == -1) continue;
 				if (dp[i][k] == dp[k + 1][i + sz])
-					dp[i][i + sz] = max(dp[i][i + sz], dp[i][k] + 1);
+					dp[i][i + sz] = dp[i][k] + 1;
 
 				ans = max(ans, dp[i][i + sz]);
 			}
