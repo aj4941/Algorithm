@@ -17,28 +17,30 @@ int main(void)
 	ios::sync_with_stdio(0);
 	cin.tie(0), cout.tie(0);
 	int n; cin >> n;
-	vector<pii> v;
-
-	ll total = 0;
+	vector<pll> a(n);
+	ll sum = 0;
 
 	for (int i = 0; i < n; i++)
 	{
-		int x, cnt; cin >> x >> cnt;
-		v.push_back({ x, cnt });
-		total += cnt;
+		cin >> a[i].first >> a[i].second;
+		sum += a[i].second;
 	}
 
-	total = (total + 1) / 2;
-	sort(v.begin(), v.end());
+	sort(a.begin(), a.end());
 
-	for (auto to : v)
+	ll pos = -1;
+	ll mid = (sum + 1) / 2;
+	ll cur = 0;
+
+	for (ll i = 0; i < n; i++)
 	{
-		if (total - to.second > 0)
-			total -= to.second;
-		else
+		cur += a[i].second;
+		if (cur >= mid)
 		{
-			cout << to.first;
-			return 0;
+			pos = a[i].first;
+			break;
 		}
 	}
+
+	cout << pos;
 }
