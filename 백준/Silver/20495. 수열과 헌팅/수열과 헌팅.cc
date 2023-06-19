@@ -34,7 +34,7 @@ int main(void) {
         ans[l[i].second].first = idx + 1;
 
         val = r[i].first;
-        idx = upper_bound(l.begin(), l.end(), pii(val, 1e9)) - l.begin();
+        idx = lower_bound(l.begin(), l.end(), pii(val, 1e9)) - l.begin();
         ans[r[i].second].second = idx;
     }
 
