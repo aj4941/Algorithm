@@ -12,36 +12,34 @@ int dx[4] = { -1, 0, 1, 0 };
 int dy[4] = { 0, 1, 0, -1 };
 ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
 
-int main(void) {
+int main(void)
+{
     ios::sync_with_stdio(0);
     cin.tie(0), cout.tie(0);
     int t; cin >> t;
     while (t--)
     {
-        map<string, int> mp;
         int n; cin >> n;
-        vector<string> s(n);
+        vector<string> a(n);
+        map<string, bool> mp;
         for (int i = 0; i < n; i++)
         {
-            cin >> s[i];
-            mp[s[i]] = i;
+            cin >> a[i];
+            mp[a[i]] = true;
         }
 
         bool hasAns = true;
+
         for (int i = 0; i < n; i++)
         {
-            for (int j = 1; j <= s[i].size(); j++)
+            for (int j = 1; j <= (int)a[i].size() - 1; j++)
             {
-                string tmp = s[i].substr(0, j);
-                if (mp.count(tmp))
-                {
-                    if (mp[tmp] != i)
-                        hasAns = false;
-                }
+                string tmp = a[i].substr(0, j);
+                if (mp.count(tmp)) hasAns = false;
             }
         }
 
-        if (hasAns == true) cout << "YES" << "\n";
+        if (hasAns) cout << "YES" << "\n";
         else cout << "NO" << "\n";
     }
 }
