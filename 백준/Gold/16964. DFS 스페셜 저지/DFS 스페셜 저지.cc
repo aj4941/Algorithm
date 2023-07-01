@@ -11,20 +11,28 @@ typedef tuple<int, int, int> ti;
 int dx[4] = { -1, 0, 1, 0 };
 int dy[4] = { 0, -1, 0, 1 };
 ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
-const int N = 100002;
-vector<int> g[N], res;
-map<pii, int> mp;
+const int N = 200002;
 int n;
+vector<int> g[N], res;
+int p[N];
 int idx = 1;
+bool hasAns = true;
 
-void dfs(int v)
+bool cmp(int &a, int &b)
 {
-    // cout << v << ' ' << idx << endl;
-    while (true)
+    return p[a] < p[b];
+}
+
+void dfs(int v, int p)
+{
+    for (int nv : g[v])
     {
         if (idx == n) return;
-        if (!mp.count({v, res[idx]})) return;
-        dfs(res[idx++]);
+        if (nv == p) continue;
+        if (res[idx++] == nv)
+            dfs(nv, v);
+        else
+            hasAns = false;
     }
 }
 
@@ -33,21 +41,24 @@ int main(void)
     ios::sync_with_stdio(0);
     cin.tie(0), cout.tie(0);
     cin >> n;
+
     for (int i = 0; i < n - 1; i++)
     {
         int u, v; cin >> u >> v;
         g[u].push_back(v); g[v].push_back(u);
-        mp[{ u, v }] = 1; mp[{ v, u }] = 1;
     }
 
-    for (int i = 0; i < n; i++)
+    for (int i = 1; i <= n; i++)
     {
         int x; cin >> x;
-        res.push_back(x);
+        p[x] = i; res.push_back(x);
     }
 
-    dfs(1);
+    for (int i = 1; i <= n; i++)
+        sort(g[i].begin(), g[i].end(), cmp);
 
-    if (idx == n) cout << 1;
+    dfs(1, 0);
+
+    if (hasAns) cout << 1;
     else cout << 0;
 }
