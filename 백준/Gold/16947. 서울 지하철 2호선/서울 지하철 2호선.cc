@@ -48,19 +48,6 @@ void dfs(int v, int p)
     cache[v] = 2;
 }
 
-int d = 0;
-
-void find(int v, int p)
-{
-    if (cycle[v]) return;
-    for (int nv : g[v])
-    {
-        if (nv == p) continue;
-        dfs(nv, v); d++;
-        break;
-    }
-}
-
 int main(void)
 {
     ios::sync_with_stdio(0);
@@ -86,6 +73,7 @@ int main(void)
         }
     }
 
+    // 출발지에서 목적지로 가는 것보다 목적지에서 출발지를 추론하는 것이 더 편하다 (bfs)
     while (!q.empty())
     {
         int v = q.front(); q.pop();
