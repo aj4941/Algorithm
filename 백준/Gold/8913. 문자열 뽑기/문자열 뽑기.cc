@@ -5,7 +5,7 @@ typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 int t;
 string s;
-map<string, int> mp;
+unordered_map<string, int> mp;
 
 int solve(string &cur)
 {
