@@ -1,21 +1,22 @@
 n = int(input())
 a = list(map(int, input().split()))
-dic = {}
+cnt = [0 for _ in range(100)]
 ans = -1
 
 for i in range(n):
-    dic[a[i]] = dic.get(a[i], 0) + 1
-    ans = max(ans, a[i])
+    for j in range(0, 64):
+        if a[i] & (1 << j):
+            cnt[j] += 1
+            ans = max(ans, (1 << j))
+            break
 
-num = 1
+num = 0
 
-while num <= 2 ** 62:
-    if num in dic:
-        dic[num * 2] = dic.get(num * 2, 0) + dic[num] // 2
-        dic[num] = dic[num] % 2
-        if dic[num * 2] > 0:
-            ans = num * 2
-
-    num *= 2
+while num <= 62:
+    cnt[num + 1] += cnt[num] // 2
+    cnt[num] %= 2
+    if cnt[num + 1] > 0:
+        ans = (1 << (num + 1))
+    num += 1
 
 print(ans)
