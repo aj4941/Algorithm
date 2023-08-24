@@ -3,6 +3,14 @@ using namespace std;
 typedef long long ll;
 typedef pair<int, int> pii;
 
+bool cmp(pii &a, pii b)
+{
+    if (a.second != b.second)
+        return a.second < b.second;
+    
+    return a.first < b.first;
+}
+
 int solution(vector<vector<int>> t) 
 {
     vector<pii> v; 
@@ -14,7 +22,7 @@ int solution(vector<vector<int>> t)
         // cout << "pos : " << x << ' ' << y << endl;
     }
     
-    sort(v.begin(), v.end());
+    sort(v.begin(), v.end(), cmp);
     
     int ans = 0, ed = -1e9;
     
@@ -24,10 +32,7 @@ int solution(vector<vector<int>> t)
         {
             ans++;
             ed = to.second;
-            continue;
         }
-        
-        ed = min(ed, to.second);
     }
     
     return ans;
