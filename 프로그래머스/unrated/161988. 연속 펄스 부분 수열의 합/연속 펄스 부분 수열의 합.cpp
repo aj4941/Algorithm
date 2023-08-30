@@ -4,28 +4,31 @@ typedef long long ll;
 
 ll solution(vector<int> v) 
 {
-    vector<ll> a, b;
-    for (ll i = 0; i < v.size(); i++)
+    int n = v.size();
+    vector<int> v1, v2;
+    for (int i = 0; i < n; i++)
     {
         if (i % 2 == 0)
         {
-            a.push_back(-v[i]);
-            b.push_back(v[i]);
+            v1.push_back(v[i]);
+            v2.push_back(-v[i]);
         }
         else
         {
-            a.push_back(v[i]);
-            b.push_back(-v[i]);
+            v1.push_back(-v[i]);
+            v2.push_back(v[i]);
         }
     }
     
-    ll ans = 0, asum = 0,bsum = 0;
-    for (ll i = 0; i < v.size(); i++)
+    ll sum1 = 0, sum2 = 0;
+    ll ans = 0;
+    
+    for (int i = 0; i < n; i++)
     {
-        asum += a[i]; bsum += b[i];
-        if (asum < 0) asum = 0;
-        if (bsum < 0) bsum = 0;
-        ans = max(ans, max(asum, bsum));
+        sum1 += v1[i], sum2 += v2[i];
+        if (sum1 < 0) sum1 = 0;
+        if (sum2 < 0) sum2 = 0;
+        ans = max(ans, max(sum1, sum2));
     }
     
     return ans;
