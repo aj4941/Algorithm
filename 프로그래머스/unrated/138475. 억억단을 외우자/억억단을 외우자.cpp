@@ -1,33 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
-const int N = 5 * 1e6 + 3;
-int cnt[N], res[N];
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
 
-void init()
+vector<int> solution(int e, vector<int> v) 
 {
-    for (int i = 1; i < N; i++)
+    vector<int> cnt(e + 1);
+    for (int i = 1; i <= e; i++)
     {
-        for (int j = i; j < N; j += i)
+        for (int j = i; j <= e; j += i)
             cnt[j]++;
     }
-}
-
-vector<int> solution(int e, vector<int> st)
-{
-    init();
-    int mx = 0, mx_ans = -1;
-    vector<int> ans;
-    
-    for (int i = e; i >= 1; i--)
+    vector<int> res;
+    int mx = 0, mx_val = -1;
+    for (int i = e; i >= 1; i--) // e개
     {
         if (mx <= cnt[i])
-            mx = cnt[i], mx_ans = i;
-        
-        res[i] = mx_ans;
+        {
+            mx = cnt[i];
+            mx_val = i;
+        }
+        res.push_back(mx_val);
     }
-    
-    for (auto to : st)
-        ans.push_back(res[to]);
+    reverse(res.begin(), res.end());
+    vector<int> ans;
+    for (int s : v)
+        ans.push_back(res[s - 1]);
     
     return ans;
 }
