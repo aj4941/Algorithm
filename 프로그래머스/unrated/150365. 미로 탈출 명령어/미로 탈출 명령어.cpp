@@ -8,45 +8,38 @@ char ch[4] = { 'd', 'l', 'r', 'u' };
 
 void solve(int x, int y, int k, int n, int m)
 {
-    // cout << x << ' ' << y << ' ' << k << endl;
     int &ret = dp[x][y][k];
     if (ret != -1) return;
     ret = 1;
     if (k == 0) return;
-    
     for (int i = 0; i < 4; i++)
     {
         int nx = x + dx[i], ny = y + dy[i];
-        if (nx <= 0 || ny <= 0 || nx > n || ny > m) continue;
+        if (nx < 1 || ny < 1 || nx > n || ny > m) continue;
         solve(nx, ny, k - 1, n, m);
     }
 }
 
-string solution(int n, int m, int x, int y, int r, int c, int k) 
+// (x, y) -> (r, c)
+string solution(int n, int m, int x, int y, int r, int c, int k)
 {
     memset(dp, -1, sizeof dp);
     solve(r, c, k, n, m);
+    int ck = 0;
     string ans = "";
     
-    int sk = 0;
-    
-    // cout << dp[x][y][0] << endl;
-    
-    if (dp[x][y][0] != 1)
-        return "impossible";
-    
-    while (sk < k)
+    while (ck < k)
     {
-        // cout << x << ' ' << y << ' ' << sk << endl;
+        // cout << x << ' ' << y << endl;
         bool flag = false;
         for (int i = 0; i < 4; i++)
         {
             int nx = x + dx[i], ny = y + dy[i];
-            if (nx <= 0 || nx <= 0 || nx > n || ny > m) continue;
-            if (dp[nx][ny][sk + 1] == 1)
+            if (nx < 1 || ny < 1 || nx > n || ny > m) continue;
+            if (dp[nx][ny][ck + 1] == 1)
             {
                 ans += ch[i];
-                x = nx, y = ny, sk++;
+                x = nx, y = ny, ck++;
                 flag = true;
                 break;
             }
@@ -55,5 +48,5 @@ string solution(int n, int m, int x, int y, int r, int c, int k)
             return "impossible";
     }
     
-    return ans; 
+    return ans;
 }
