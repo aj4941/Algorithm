@@ -1,41 +1,49 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef vector<vector<int>> vii;
+typedef vector<int> vi;
+// ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
+#define inf 1000000007
+const int N = 700002;
+bool cache[N];
 
-int solution(vector<int> q1, vector<int> q2) 
+int solution(vector<int> queue1, vector<int> queue2) 
 {
-    ll sum1 = 0, sum2 = 0;
     int ans = 0;
-    deque<ll> dq1, dq2;
-    for (auto to : q1) 
+    ll sum1 = 0, sum2 = 0;
+    deque<int> q1, q2;
+    int idx = 0;
+    for (auto to : queue1)
     {
-        dq1.push_back(to);
+        q1.push_back(to);
         sum1 += to;
     }
-    for (auto to : q2)
+    for (auto to : queue2)
     {
-        dq2.push_back(to);
+        q2.push_back(to);
         sum2 += to;
     }
     
-    ll sz = q1.size() + q2.size();
-    
-    while (sum1 != sum2 && ans < sz * 2)
+    while (sum1 != sum2 && ans < 2 * N)
     {
-        ll v1 = dq1.front(), v2 = dq2.front();
         if (sum1 < sum2)
         {
-            dq2.pop_front(); sum2 -= v2;
-            dq1.push_back(v2); sum1 += v2;
+            int f = q2.front(); q2.pop_front(); sum2 -= f;
+            q1.push_back(f); sum1 += f;
         }
         else
         {
-            dq1.pop_front(); sum1 -= v1;
-            dq2.push_back(v1); sum2 += v1;
+            int f = q1.front(); q1.pop_front(); sum1 -= f;
+            q2.push_back(f); sum2 += f;
         }
         ans++;
     }
     
-    if (ans == sz * 2) ans = -1;
+    if (ans == 2 * N) ans = -1;
     return ans;
 }
