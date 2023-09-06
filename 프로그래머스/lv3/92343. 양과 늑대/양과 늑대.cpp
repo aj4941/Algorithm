@@ -1,66 +1,61 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef vector<vector<int>> vi;
-const int N = 17;
+typedef long long ll;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef vector<vector<int>> vii;
+typedef vector<int> vi;
+// ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
+#define inf 1000000007
+const int N = 19;
+pii dp[1 << N];
 vector<int> g[N];
-bool dp[1 << N]; // 0 ~ 16
 
-int solution(vector<int> info, vi edges)
+int solution(vector<int> info, vector<vector<int>> edges) 
 {
     int n = info.size();
+    for (int bit = 0; bit < (1 << n); bit++)
+        dp[bit] = pii(-1, -1);
+    
+    if (info[0] == 1) return 0;
+    dp[1] = pii(1, 0);
     
     for (auto to : edges)
     {
-        int u = to[0], v = to[1];
-        g[u].push_back(v); g[v].push_back(u);
+        int x = to[0], y = to[1];
+        g[x].push_back(y); g[y].push_back(x);
     }
     
-    dp[1] = true;
-    
-    for (int bit = 1; bit < (1 << n); bit++) // 2^17
+    int ans = 1;
+
+    for (int bit = 0; bit < (1 << n); bit++) 
     {
-        if (!dp[bit]) continue;
-        int s = 0, w = 0;
-        
-        for (int i = 0; i < n; i++)
+        for (int i = 1; i < n; i++) 
         {
             if (bit & (1 << i))
             {
-                if (info[i] == 0) s++;
-                else w++;
-            }
-        }
-        
-        for (int x = 0; x < n; x++) // 17
-        {
-            if (bit & (1 << x))
-            {
-                for (int nx : g[x])
+                for (int ni : g[i])
                 {
-                    if (bit & (1 << nx)) continue;
-                    if (info[nx] == 0) dp[bit | (1 << nx)] = true;
-                    else if (s > w + 1) dp[bit | (1 << nx)] = true;
+                    if (bit & (1 << ni)) 
+                    {
+                        int nbit = bit - (1 << i);
+                        int x = dp[nbit].first, y = dp[nbit].second;
+                        if (x == -1) continue;
+                        int nx = x + (info[i] == 0 ? 1 : 0);
+                        int ny = y + (info[i] == 1 ? 1 : 0);
+                        if (nx <= ny) continue;
+                        if (dp[bit].first < nx)
+                            dp[bit] = pii(nx, ny);
+                        
+                        ans = max(ans, dp[bit].first);
+                    }
                 }
             }
         }
     }
-    
-    int ans = 0;
-    
-    for (int bit = 0; bit < (1 << n); bit++)
-    {
-        if (!dp[bit]) continue;
-        int cnt = 0;
-        for (int i = 0; i < n; i++)
-        {
-            if (bit & (1 << i))
-            {
-                if (info[i] == 0)
-                    cnt++;
-            }
-        }
-        ans = max(ans, cnt);
-    }
-    
+    int bit = (1 << 0) + (1 << 1) + (1 << 8);
+    cout << dp[bit].first << ' ' << dp[bit].second << endl;
     return ans;
 }
