@@ -1,32 +1,28 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-const ll N = 300002;
-int par[N], indegree[N];
+typedef vector<vector<int>> vi;
+const int N = 300005;
 vector<int> g[N];
+int par[N], indegree[N];
 
 void dfs(int v, int p)
 {
-    par[v] = p; indegree[p]++;
+    par[v] = p;
     for (int nv : g[v])
     {
         if (nv == p) continue;
+        indegree[v]++;
         dfs(nv, v);
     }
 }
 
-long long solution(vector<int> a, vector<vector<int>> edges) 
+ll solution(vector<int> A, vi edges) 
 {
-    vector<ll> A;
-    for (auto to : a) A.push_back(to);
-    int n = a.size();
-    
-    ll sum = 0;
-    for (int i = 0; i < n; i++)
-        sum += A[i];
-    
-    if (sum != 0)
-        return -1;
+    vector<ll> a;
+    int n = A.size();
+    for (int i = 0; i < n; i++) 
+        a.push_back(A[i]);
     
     for (auto to : edges)
     {
@@ -34,27 +30,43 @@ long long solution(vector<int> a, vector<vector<int>> edges)
         g[u].push_back(v); g[v].push_back(u);
     }
     
-    dfs(0, n);
-    
+    dfs(0, -1);
     queue<int> q;
+    vector<bool> cache(n, false);
     
     for (int i = 0; i < n; i++)
     {
-        if (indegree[i] == 0) // leaf
+        if (indegree[i] == 0)
+        {
             q.push(i);
+            cache[i] = true;
+        }
     }
     
     ll ans = 0;
     
     while (!q.empty())
     {
-        int v = q.front(); q.pop(); 
-        int nv = par[v]; indegree[nv]--;
-        ans += abs(A[v]);
-        A[nv] += A[v]; A[v] = 0;
-        if (indegree[nv] == 0)
-            q.push(nv);
+        int v = q.front(); q.pop();
+        for (int nv : g[v])
+        {
+            if (cache[nv]) continue;
+            indegree[nv]--;
+            ans += abs(a[v]);
+            a[nv] += a[v], a[v] = 0;
+            if (indegree[nv] == 0)
+            {
+                q.push(nv);
+                cache[nv] = true;
+            }
+        }
     }
-
+    
+    for (int i = 0; i < n; i++)
+    {
+        if (a[i] != 0)
+            return -1;
+    }
+    
     return ans;
 }
