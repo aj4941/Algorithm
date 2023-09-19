@@ -1,39 +1,35 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> pii;
 typedef long long ll;
-typedef pair<ll, ll> pll;
-map<string, string> g;
-map<string, ll> res;
+unordered_map<string, string> mp;
+unordered_map<string, int> val;
 
-vector<int> solution(vector<string> e, 
-                     vector<string> r, vector<string> s, vector<int> a) 
+vector<int> solution(vector<string> enroll,
+                     vector<string> referral,
+                     vector<string> seller, vector<int> amount) 
 {
-    ll n = e.size();
+    int n = enroll.size(), m = seller.size();
     
-    for (ll i = 0; i < n; i++)
-        g[e[i]] = r[i];
+    for (int i = 0; i < n; i++)
+        mp[enroll[i]] = referral[i]; // 자식 -> 부모
     
-    for (ll i = 0; i < s.size(); i++)
+    for (int i = 0; i < m; i++)
     {
-        res[s[i]] += a[i] * 100;
-        ll value = a[i] * 100;
-        string v = s[i];
-        while (true)
+        int value = amount[i] * 100;
+        string s = seller[i];
+        while (value > 0)
         {
-            string nv = g[v];
-            res[nv] += value / 10; 
-            res[v] -= value / 10;
+            val[s] += value - (value / 10);  
             value /= 10;
-            if (nv == "-" || value < 10) break;
-            v = nv;
+            if (s == "-") break;
+            s = mp[s];
         }
     }
     
     vector<int> ans;
     
-    for (ll i = 0; i < n; i++)
-        ans.push_back(res[e[i]]);
+    for (int i = 0; i < n; i++) 
+        ans.push_back(val[enroll[i]]);
     
     return ans;
 }
