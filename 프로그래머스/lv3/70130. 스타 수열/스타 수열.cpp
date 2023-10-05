@@ -1,44 +1,41 @@
 #include <bits/stdc++.h>
 using namespace std;
 const int N = 500002;
-vector<int> v[N];
-int n;
+vector<int> res[N];
 
-int solution(vector<int> a) {
-    
-    n = a.size();
-    for (int i = 0; i < N; i++)
-        v[i].push_back(-1);
-    
+int solution(vector<int> a) 
+{
+    int n = a.size();
     for (int i = 0; i < n; i++)
-        v[a[i]].push_back(i);
-    
-    for (int i = 0; i < N; i++)
-        v[i].push_back(n);
+        res[a[i]].push_back(i);
     
     int ans = 0;
     
-    for (int i = 0; i < N; i++)
+    for (int num = 0; num < n; num++)
     {
-        int res = 0, last = -1e9;
-        int len = v[i].size();
-        for (int j = 1; j < len - 1; j++)
+        int l = -1, tmp = 0;
+        for (int i = 0; i < res[num].size(); i++)
         {
-            int cv = v[i][j];
-            int lv = v[i][j - 1], rv = v[i][j + 1];
-            if (abs(cv - lv) != 1 && cv - 1 != last)
+            int x = res[num][i];
+            if (x - 1 == l)
             {
-                last = cv - 1;
-                res++;
+                if (i + 1 < res[num].size() && x + 1 == res[num][i + 1])
+                {
+                    l = x;
+                    continue;
+                }
+                if (x + 1 == n)
+                    continue;
+                tmp += 2;
+                l = x + 1;
             }
-            else if (abs(cv - rv) != 1 && cv + 1 != last)
+            else
             {
-                last = cv + 1;
-                res++;
+                tmp += 2;
+                l = x;
             }
         }
-        
-        ans = max(ans, res * 2);
+        ans = max(ans, tmp);
     }
     
     return ans;
