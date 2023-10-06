@@ -1,44 +1,47 @@
 #include <bits/stdc++.h>
 using namespace std;
 map<string, int> mp;
-map<string, bool> cache;
+int ans_len = 1e9, ans_l = -1, ans_r = -1;
+set<string> st;
 
-vector<int> solution(vector<string> s) {
+vector<int> solution(vector<string> gems) 
+{
+    int n = gems.size();
+    for (int i = 0; i < n; i++) st.insert(gems[i]);
     
-    int n = s.size();
-    int sz = 0;
-    for (auto to : s)
+    int total = st.size();
+    int l = 0, r = 0; mp[gems[0]] = 1;
+    int cnt = 1;
+    
+    while (true)
     {
-        if (!cache[to]) sz++;
-        cache[to] = true;
-    }
-    int l = 0, r = 0, cnt = 1; mp[s[l]]++;
-    int ans = 1e9, ans_l = -1, ans_r = -1;
-    while (r < n)
-    {
-        if (cnt == sz)
+        if (cnt == total)
         {
-            if (r - l + 1 < ans)
+            // cout << l << ' ' << r << endl;
+            int len = r - l + 1;
+            if (len < ans_len)
             {
-                ans = r - l + 1;
+                ans_len = len;
                 ans_l = l, ans_r = r;
             }
-            mp[s[l]]--;
-            if (mp[s[l]] == 0) cnt--;
-            l++;
+            if (mp[gems[l]] == 1) cnt--;
+            mp[gems[l]]--; l++;
+            
+            if (l > r)
+            {
+                if (l == n) break;
+                r = l; 
+                mp[gems[r]] = 1; cnt = 1;
+            }
         }
         else
         {
+            if (r + 1 == n) break;
             r++;
-            if (r < n) 
-            {
-                mp[s[r]]++;
-                if (mp[s[r]] == 1)
-                    cnt++;
-            }
+            mp[gems[r]]++;
+            if (mp[gems[r]] == 1) cnt++;
         }
     }
     
-    vector<int> answer = { ans_l + 1, ans_r + 1 };
-    return answer;
+    return { ans_l + 1, ans_r + 1 };
 }
