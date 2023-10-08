@@ -1,56 +1,57 @@
 #include <bits/stdc++.h>
 using namespace std;
-vector<string> user, banned;
-bool cache[10];
-int res[10];
-int N, M;
-set<vector<int>> s;
+vector<string> bvec[10];
+map<string, int> mp;
+int ans = 0;
+int sz = 0;
 
 bool calc(string a, string b)
 {
-    if (a.size() != b.size()) return false;
+    if (a.size() != b.size())
+        return false;
+    
     for (int i = 0; i < a.size(); i++)
     {
-        if (a[i] != b[i] && b[i] != '*')
-            return false;
+        if (a[i] == b[i] || a[i] == '*') continue;
+        return false;
     }
     return true;
 }
 
+set<vector<string>> st;
 
-void dfs(int cnt)
+void dfs(int idx)
 {
-    if (cnt == M)
+    if (idx == sz)
     {
-        vector<int> v;
-        bool hasAns = true;
-        for (int i = 0; i < cnt; i++)
-        {
-            if (!calc(user[res[i]], banned[i]))
-                hasAns = false;
-            v.push_back(res[i]);
-        }
-        if (hasAns)
-        {
-            sort(v.begin(), v.end());
-            s.insert(v);
-        }
+        vector<string> tmp;
+        for (auto to : mp) tmp.push_back(to.first);
+        sort(tmp.begin(), tmp.end());
+        st.insert(tmp);
         return;
     }
     
-    for (int i = 0; i < N; i++)
+    for (auto to : bvec[idx])
     {
-        if (cache[i]) continue;
-        cache[i] = true; res[cnt] = i;
-        dfs(cnt + 1);
-        cache[i] = false;
+        if (mp.count(to)) continue;
+        mp[to] = 1;
+        dfs(idx + 1);
+        mp.erase(to);
     }
 }
 
-int solution(vector<string> user_id, vector<string> banned_id) {
-    
-    user = user_id, banned = banned_id;
-    N = user.size(); M = banned.size();
+int solution(vector<string> u, vector<string> b) 
+{
+    sz = b.size();
+    for (int i = 0; i < b.size(); i++)
+    {
+        for (int j = 0; j < u.size(); j++)
+        {
+            if (calc(b[i], u[j]))
+                bvec[i].push_back(u[j]);
+        }
+    }
     dfs(0);
-    return s.size();
+    
+    return st.size();
 }
