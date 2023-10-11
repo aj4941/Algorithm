@@ -29,7 +29,7 @@ bool solution(vi key, vi lock)
     for (int t = 0; t < 4; t++) 
     {
         move(key);
-        for (int cx = -30; cx <= 30; cx++) for (int cy = -30; cy <= 30; cy++)
+        for (int cx = -n - 1; cx <= n - 1; cx++) for (int cy = -n - 1; cy <= n - 1; cy++)
         {
             vi l = lock;
             for (int i = 0; i < m; i++) for (int j = 0; j < m; j++)
