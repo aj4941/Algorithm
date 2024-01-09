@@ -4,8 +4,10 @@ typedef pair<int, int> pii;
 typedef long long ll;
 int dx[6] = { -1, -1, 0, 0, 1, 1 };
 int dy[6] = { -1, 0, -1, 1, 0, 1 };
-multiset<int> a[200], b[200];
-int p[300002];
+const int N = 200002;
+priority_queue<pii> a, b;
+int p[N];
+
 int main(void)
 {
     ios_base::sync_with_stdio(false);
@@ -14,62 +16,55 @@ int main(void)
     for (int i = 0; i < n; i++)
     {
         int x; cin >> x;
-        a[x].insert(i + 1);
+        a.push({ -x, -(i + 1) });
         p[i + 1] = x;
     }
     for (int i = n; i < n + m; i++)
     {
         int x; cin >> x;
-        b[x].insert(i + 1);
+        b.push({ -x, -(i + 1) });
         p[i + 1] = x;
     }
 
     int k; cin >> k;
-
     for (int i = 0; i < k; i++)
     {
-        char ch; cin >> ch;
-        if (ch == 'U')
+        char c; cin >> c;
+        if (c == 'U')
         {
             int x, y; cin >> x >> y;
-            int val = p[x];
-            if (x <= n)
-            {
-                auto it = a[val].find(x);
-                a[val].erase(it);
-                a[y].insert(x);
-                p[x] = y;
-            }
-            else
-            {
-                auto it = b[val].find(x);
-                b[val].erase(it);
-                b[y].insert(x);
-                p[x] = y;
-            }
+            p[x] = y;
+            if (x <= n) a.push({ -y, -x });
+            else b.push({ -y, -x });
         }
         else
         {
-            // cout << "OK" << endl;
-            int x = -1, y = -1;
-            for (int num = 1; num <= 100; num++)
+            int resA = -1, resB = -1;
+            while (a.size())
             {
-                if (a[num].size())
+                auto to = a.top();
+                int x = -to.second, y = -to.first;
+                if (p[x] == y)
                 {
-                    x = *a[num].begin();
+                    resA = x;
                     break;
                 }
-            }
-            for (int num = 1; num <= 100; num++)
-            {
-                if (b[num].size())
-                {
-                    y = *b[num].begin();
-                    break;
-                }
+                a.pop();
             }
 
-            cout << x << ' ' << y << "\n";
+            while (b.size())
+            {
+                auto to = b.top();
+                int x = -to.second, y = -to.first;
+                if (p[x] == y)
+                {
+                    resB = x;
+                    break;
+                }
+                b.pop();
+            }
+
+            cout << resA << ' ' << resB << "\n";
         }
     }
 }
