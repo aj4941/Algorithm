@@ -1,35 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> pii;
-typedef long long ll;
-const ll inf = 1000000007;
-int dx[4] = { -1, 1, 0, 0 };
-int dy[4] = { 0, 0, -1, 1 };
-unordered_map<string, bool> cache;
 
 int main(void)
 {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL); cout.tie(NULL);
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
     int n, m; cin >> n >> m;
-    for (int i = 0; i < n; i++)
-    {
-        string s; cin >> s;
-        string t = "";
-        for (int j = 0; j < s.size(); j++)
-        {
-            t.push_back(s[j]);
-            cache[t] = true;
-        }
-    }
-    
+    vector<string> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
+    // index 증가 -> 사전순으로 앞설 가능성 감소
+    sort(v.begin(), v.end());
+
     int ans = 0;
-    
+
     for (int i = 0; i < m; i++)
     {
         string s; cin >> s;
-        if (cache.count(s)) ans++;
+        int l = -1, r = n - 1;
+        int len = s.size();
+        while (l + 1 < r)
+        {
+            int mid = (l + r) / 2;
+            if (v[mid] < s) l = mid;
+            else r = mid;
+        }
+
+        if (v[r].size() < s.size()) continue;
+        if (v[r].substr(0, len) == s) ans++;
     }
-    
+
     cout << ans;
 }
