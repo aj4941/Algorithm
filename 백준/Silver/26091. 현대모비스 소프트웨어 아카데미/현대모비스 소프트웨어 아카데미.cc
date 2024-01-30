@@ -1,33 +1,42 @@
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
+typedef vector<vector<int>> vi;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
-int n, m;
 
 int main(void)
 {
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
-    cin >> n >> m;
-    vector<ll> a(n);
+    int n, m; cin >> n >> m;
+    vector<int> a(n);
     for (int i = 0; i < n; i++) cin >> a[i];
-    sort(a.rbegin(), a.rend());
 
-    int l = 0, r = n / 2 + 1;
-    while (l + 1 < r) // [l, r)
+    if (n == 1)
     {
-        int mid = (l + r) / 2;
-        bool flag = true;
-        for (int i = 0; i < mid; i++)
+        cout << 0;
+        return 0;
+    }
+    sort(a.begin(), a.end());
+
+    int l = 0, r = n - 1;
+    int ans = 0;
+
+    while (true)
+    {
+        if (a[l] + a[r] >= m)
         {
-            if (a[i] + a[2 * mid - 1 - i] < m)
-                flag = false;
+            ans++;
+            l++; r--;
         }
 
-        if (flag) l = mid;
-        else r = mid;
+        if (l >= r) break;
+
+        while (l < n && a[l] + a[r] < m) l++;
+
+        if (l >= r) break;
     }
 
-    cout << l;
+    cout << ans;
 }
