@@ -1,0 +1,30 @@
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+typedef vector<vector<int>> vi;
+typedef pair<int, int> pii;
+typedef pair<ll, ll> pll;
+typedef vector<vector<ll>> vll;
+int dx[4] = { -1, 1, 0, 0 };
+int dy[4] = { 0, 0, -1, 1 };
+int n, m;
+
+int main(void)
+{
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    cin >> n >> m;
+    vector<ll> a(n + 1), sum(n + 1);
+    for (ll i = 1; i <= n; i++)
+    {
+        cin >> a[i];
+        sum[i] = sum[i - 1] + a[i];
+    }
+
+    ll ans = 0;
+
+    for (ll i = m; i <= n; i++)
+        ans = max(ans, sum[i] - sum[i - m]);
+
+    cout << ans;
+}
