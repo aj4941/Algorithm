@@ -1,33 +1,39 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
+#define MAX 100000
 using namespace std;
-typedef long long ll;
+bool saerch_num(int num);
+int arr1[MAX];
+int n,m,num=0;
+bool x=true;
 
-int main(void)
-{
-    ll a[120000];
-    ll n, m; cin >> n;
-    for(int i = 0; i < n; i++)
-        scanf("%lld", &a[i]);
-    sort(a, a + n);
-    cin >> m;
-    for(int i = 0; i < m; i++)
-    {
-        ll find;
-        scanf("%lld", &find);
-        ll left = 0, right = n - 1;
-        bool flag = false;
-        while(left <= right)
-        {
-            ll mid = (left + right) / 2;
-            if(a[mid] == find)
-            {
-                flag = true;
-                break;
-            }
-            else if(a[mid] < find) left = mid + 1;
-            else right = mid - 1;
-        }
-        if(flag) cout << 1 << "\n";
-        else cout << 0 << "\n";
+int main() {
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+    cin >> n;
+    for (int i = 0; i < n; i++) {
+        cin >> num;
+        arr1[i] = num;
     }
+
+    sort(arr1, arr1 + n);
+    cin >> m;
+    for (int i = 0; i < m; i++) {
+        cin >> num;
+        int low = 0, high = n - 1;
+        bool found = false;
+        while (low <= high) {
+            int mid = (low + high) / 2;
+            if (num == arr1[mid]) {
+                found = true;
+                break;
+            } else if (num > arr1[mid]) {
+                low = mid + 1;
+            } else if (num < arr1[mid]) {
+                high = mid - 1;
+            }
+        }
+
+        cout << found << "\n";
+    }
+    return 0;
 }
