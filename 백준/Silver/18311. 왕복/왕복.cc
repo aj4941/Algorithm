@@ -1,38 +1,43 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef vector<vector<int>> vi;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-typedef vector<vector<ll>> vll;
-int dx[4] = { -1, 1, 0, 0 };
-int dy[4] = { 0, 0, -1, 1 };
+const int intmax = 2147483647;
+int dx[] = { 1,0,-1,0 ,1,1,-1,-1 };
+int dy[] = { 0,1,0,-1 ,1,-1,1,-1 };
+#define ll long long
 
-int main(void)
-{
-    ios_base::sync_with_stdio(0);
-    cin.tie(0); cout.tie(0);
-    ll n, k; cin >> n >> k;
-    vector<ll> a(n), v1, v2;
-    v1.push_back(0); v2.push_back(0);
-    for (int i = 0; i < n; i++)
-    {
-        cin >> a[i];
-        v1.push_back(v1.back() + a[i]);
+int main() {
+
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+
+    ll N,K;
+    cin>>N>>K;
+
+    vector<ll> v(N+2,10000000);
+    ll line = 0;
+    for(int i=1; i<=N; i++) {
+        cin >> v[i];
+        line+=v[i];
     }
 
-    for (int i = n - 1; i >= 0; i--)
-        v2.push_back(v2.back() + a[i]);
+    int value;
+    if(K<line){
+        value = 0;
+        while(K>=0){
+            value++;
+            K -= v[value];
+        }
 
-    if (k <= v1.back())
-    {
-        int idx = upper_bound(v1.begin(), v1.end(), k) - v1.begin();
-        cout << idx;
-        return 0;
+    }else{
+        K-=line;
+        value = N+1;
+        while(K>=0){
+            value--;
+            K -= v[value];
+        }
     }
 
-    k -= v1.back();
+    cout<<value;
 
-    int idx = upper_bound(v2.begin(), v2.end(), k) - v2.begin();
-    cout << (n + 1) - idx;
 }
