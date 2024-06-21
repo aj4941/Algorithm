@@ -14,25 +14,31 @@ int main(void)
     cin.tie(0); cout.tie(0);
     int n; cin >> n;
     vector<pll> a(n);
+    vector<ll> v = { 0 };
     for (int i = 0; i < n; i++)
+    {
         cin >> a[i].first >> a[i].second;
+        v.push_back(a[i].first);
+    }
+    
+    sort(v.begin(), v.end());
 
-    ll mx = 0, ans = 0;
+    ll mx = -1, ans = 0;
 
-    for (ll val = 1e6; val >= 0; val--)
+    for (auto value : v)
     {
         ll res = 0;
         for (int i = 0; i < n; i++)
         {
-            if (a[i].first < val) continue;
-            if (val - a[i].second < 0) continue;
-            res += val - a[i].second;
+            if (a[i].first < value) continue;
+            ll cost = value - a[i].second;
+            if (cost > 0) res += cost;
         }
 
-        if (mx <= res)
+        if (mx < res)
         {
             mx = res;
-            ans = val;
+            ans = value;
         }
     }
 
