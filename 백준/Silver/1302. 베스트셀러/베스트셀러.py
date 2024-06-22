@@ -8,14 +8,14 @@ for _ in range(n):
     else:
         word_dict[word] = 1
 
-sorted_word_dict = dict(sorted(word_dict.items()))
-
 max_freq = 0
 most_common_word = ''
 
-for word, count in sorted_word_dict.items():
-    if count > max_freq:
+for word, count in word_dict.items():
+    if max_freq < count:
         max_freq = count
         most_common_word = word
+    elif max_freq == count and word < most_common_word:
+    	most_common_word = word
 
 print(most_common_word)
