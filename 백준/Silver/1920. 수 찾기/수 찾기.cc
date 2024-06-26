@@ -1,39 +1,31 @@
-#include<bits/stdc++.h>
-#define MAX 100000
+#include <bits/stdc++.h>
 using namespace std;
-bool saerch_num(int num);
-int arr1[MAX];
-int n,m,num=0;
-bool x=true;
 
-int main() {
+int main(void)
+{
     ios_base::sync_with_stdio(0);
     cin.tie(0); cout.tie(0);
-    cin >> n;
-    for (int i = 0; i < n; i++) {
-        cin >> num;
-        arr1[i] = num;
-    }
+    int n; cin >> n;
+    vector<int> a(n);
+    for (int i = 0; i < n; i++) cin >> a[i];
 
-    sort(arr1, arr1 + n);
-    cin >> m;
-    for (int i = 0; i < m; i++) {
-        cin >> num;
-        int low = 0, high = n - 1;
-        bool found = false;
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (num == arr1[mid]) {
-                found = true;
-                break;
-            } else if (num > arr1[mid]) {
-                low = mid + 1;
-            } else if (num < arr1[mid]) {
-                high = mid - 1;
-            }
+    sort(a.begin(), a.end());
+
+    int m; cin >> m;
+
+    for (int i = 0; i < m; i++)
+    {
+        int x; cin >> x;
+        int l = 0, r = n;
+
+        while (l + 1 < r)
+        {
+            int mid = (l + r) / 2;
+            if (a[mid] <= x) l = mid;
+            else r = mid;
         }
 
-        cout << found << "\n";
+        if (a[l] == x) cout << 1 << "\n";
+        else cout << 0 << "\n";
     }
-    return 0;
 }
