@@ -19,7 +19,7 @@ while l + 1 < r: # [l, r) : TTTTFFFF
     mid = (l + r) // 2
     cnt = 0
 
-    for x in a:
+    for x in a: # 조각 개수 세기
         cnt += x // mid
 
     if cnt >= m: # True
