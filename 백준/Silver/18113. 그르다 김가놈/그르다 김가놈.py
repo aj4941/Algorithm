@@ -13,21 +13,21 @@ for i in range(n):
     else:
         a[i] = 0
 
-# 이진 탐색을 수행하여 문제의 조건을 만족하는 최대 l 값을 찾습니다.
-l, r = 0, 10**18
+l, r = 0, 10**9 + 1
 
-while l + 1 < r:
+while l + 1 < r: # [l, r) : TTTTFFFF
     mid = (l + r) // 2
-    cnt = sum(x // mid for x in a)
+    cnt = 0
 
-    if cnt >= m:
+    for x in a:
+        cnt += x // mid
+
+    if cnt >= m: # True
         l = mid
-    else:
+    else: # False
         r = mid
 
-# 만약 l이 0이라면 -1을 출력합니다.
 if l == 0:
     l = -1
 
-# 결과를 출력합니다.
 print(l)
