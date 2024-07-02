@@ -5,8 +5,8 @@ typedef vector<vector<int>> vi;
 typedef pair<int, int> pii;
 typedef pair<ll, ll> pll;
 typedef vector<vector<ll>> vll;
-int dx[4] = { 1, -1, 0, 0 };
-int dy[4] = { 0, 0, 1, -1 };
+int dx[4] = { 1, 0, 0, 0 };
+int dy[4] = { 0, 1, 1, -1 };
 
 int main(void)
 {
@@ -14,31 +14,33 @@ int main(void)
     cin.tie(0); cout.tie(0);
     string s; cin >> s;
     int n; cin >> n;
-    for (int i = 0; i < n; i++)
+    vector<string> v(n);
+    for (int i = 0; i < n; i++) cin >> v[i];
+
+    for (int mv = 0; mv < 26; mv++) // 26
     {
+        string ns = s;
+
+        for (int i = 0; i < ns.size(); i++) // 100
+            ns[i] = ((ns[i] - 'a' + mv) % 26) + 'a';
+
         bool hasAns = false;
-        string t; cin >> t;
-        for (int i = 0; i < s.size(); i++)
+
+        for (int i = 0; i < v.size(); i++) // 20
         {
-            if (i + t.size() - 1 >= s.size()) break;
-            int curd = -1;
-            bool flag = true;
-            for (int j = 0; j < t.size(); j++)
+            bool flag = false;
+
+            for (int j = 0; j < ns.size(); j++) // 100
             {
-                int d = (s[i + j] - t[j] + 26) % 26;
-                if (curd == -1) curd = d;
-                else if (curd != d)
+                if (ns.substr(j, v[i].size()) == v[i])
                 {
-                    flag = false;
+                    flag = true;
                     break;
                 }
             }
 
             if (flag)
             {
-                for (int j = 0; j < s.size(); j++)
-                    s[j] = ((s[j] - 'a' - curd + 26) % 26) + 'a';
-
                 hasAns = true;
                 break;
             }
@@ -46,7 +48,7 @@ int main(void)
 
         if (hasAns)
         {
-            cout << s;
+            cout << ns;
             return 0;
         }
     }
