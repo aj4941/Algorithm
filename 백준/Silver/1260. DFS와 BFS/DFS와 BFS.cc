@@ -1,57 +1,64 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-typedef pair<int, int> pii;
-typedef pair<ll, ll> pll;
-ll gcd(ll a, ll b) { for (; b; a %= b, swap(a, b)); return a; }
-int dx[4] = { 1, -1, 0, 0 };
-int dy[4] = { 0, 0, 1, -1 };
-bool check[2000];
-vector<vector<int>> graph(2000);
+typedef queue<int> qi;
+typedef vector<int> vi;
+const int MAX = 1005;
+
+bool visited[MAX];
+vi graph[MAX];
 
 void dfs(int v)
 {
-    cout << v << " ";
-    check[v] = true;
-    for(int to : graph[v])
+    visited[v] = true;
+    cout << v << ' ';
+    for (int i : graph[v])
     {
-        if(!check[to])
-            dfs(to);
+        if (!visited[i])
+            dfs(i);
     }
 }
 
 void bfs(int v)
 {
-    queue<int> q;
-    q.push(v);
-    check[v] = true;
-    while(!q.empty())
+    qi queue = qi();
+    queue.push(v);
+    visited[v] = true;
+    
+    while (!queue.empty())
     {
-        int top = q.front(); q.pop();
-        cout << top << " ";
-        for(int to : graph[top])
+        int node = queue.front();
+        queue.pop();
+        cout << node << ' ';
+        for (int i : graph[node])
         {
-            if(!check[to])
+            if (!visited[i])
             {
-                q.push(to);
-                check[to] = true;
+                visited[i] = true;
+                queue.push(i);
             }
         }
     }
 }
-int main(void)
+
+int n, m, v = 0;
+int main()
 {
-    ios::sync_with_stdio(0);
-    cin.tie(0), cout.tie(0);
-    int n, m, v; cin >> n >> m >> v;
-    for(int i = 0; i < m; i++)
+    ios_base::sync_with_stdio(0);
+    cin.tie(0); cout.tie(0);
+
+    memset(visited, false, sizeof visited);
+    cin >> n >> m >> v;
+    for (int i = 0; i < m; i++)
     {
-        int U, V; cin >> U >> V;
-        graph[U].push_back(V);
-        graph[V].push_back(U);
+        int st, en = 0;
+        cin >> st >> en;
+        graph[st].push_back(en);
+        graph[en].push_back(st);
     }
-    for(int i = 1; i <= n; i++) sort(graph[i].begin(), graph[i].end());
-    dfs(v); cout << "\n";
-    memset(check, false, sizeof check);
-    bfs(v);
+    for (int i = 1; i <= n; i++)
+        sort(graph[i].begin(), graph[i].end());
+    
+    dfs(v); cout << '\n';
+    memset(visited, false, sizeof visited);
+    bfs(v); cout << '\n';
 }
