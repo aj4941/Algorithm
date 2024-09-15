@@ -14,9 +14,9 @@ int solve(int x, int y)
     if (ret != -1) return ret;
     ret = 1e9;
     if (x == y) return ret = 0;
-    if (x + x < N && y + 3 < N)
+    if (x + x <= y + 3)
         ret = min(ret, solve(x + x, y + 3) + 1);
-    if (x + 1 < N)
+    if (x + 1 <= y)
         ret = min(ret, solve(x + 1, y) + 1);
 
     return ret;
