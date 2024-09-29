@@ -20,7 +20,7 @@ int main(void)
     sort(v1.rbegin(), v1.rend()); sort(v2.rbegin(), v2.rend());
     ll res = 0, ans = 0;
 
-    for (int i = 0; i <= m - 1; i++)
+    for (int i = 0; i <= m; i++)
     {
         while (v1.size() && v1.back().first == i)
         {
@@ -30,7 +30,7 @@ int main(void)
         }
     }
 
-    ll l = 0, r = m - 1;
+    ll l = 0, r = m;
     ans = res;
 
     while (true)
