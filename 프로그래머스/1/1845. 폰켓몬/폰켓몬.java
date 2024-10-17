@@ -3,23 +3,15 @@ import java.util.*;
 class Solution 
 {
     Map<Integer, Integer> mp = new HashMap<>();
-    
     public int solution(int[] a) 
     {
-        int ans = 0;
         int n = a.length;
-        
-        for (int val : a)
+        for (int i = 0; i < n; i++)
         {
-            if (mp.containsKey(val))
-                continue;
-            else
-            {
-                mp.put(val, 1);
-                ans++;
-            }
+            if (mp.containsKey(a[i])) continue;
+            mp.put(a[i], 1);
         }
         
-        return Math.min(n / 2, ans);
+        return Math.min(n / 2, mp.size());
     }
 }
