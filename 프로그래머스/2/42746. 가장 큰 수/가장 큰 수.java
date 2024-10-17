@@ -2,32 +2,31 @@ import java.util.*;
 
 class Solution 
 {
-    int cmp(int v1, int v2)
+    int cmp(String a, String b)
     {
-        String s1 = String.valueOf(v1);
-        String s2 = String.valueOf(v2);
-        int r1 = Integer.valueOf(s1 + s2);
-        int r2 = Integer.valueOf(s2 + s1);
+        long r1 = Long.valueOf(a + b);
+        long r2 = Long.valueOf(b + a);
         if (r1 > r2) return -1;
         else if (r1 == r2) return 0;
         else return 1;
     }
     
-    public String solution(int[] numbers) 
+    public String solution(int[] a) 
     {
-        ArrayList<Integer> a = new ArrayList<>();
-        for (int to : numbers) a.add(to);
-        Collections.sort(a, (v1, v2) -> cmp(v1, v2));
-        StringBuilder ans = new StringBuilder();
+        int n = a.length;
+        String[] str = new String[n];
+        for (int i = 0; i < n; i++)
+            str[i] = String.valueOf(a[i]);
         
-        for (int to : a)
-            ans.append(to);
+        Arrays.sort(str, (o1, o2) -> cmp(o1, o2));
         
-        String answer = ans.toString();
+        String ans = "";
+        for (int i = 0; i < n; i++)
+            ans += str[i];
         
-        if (answer.charAt(0) == '0')
+        if (ans.charAt(0) == '0')
             return "0";
         
-        return answer;
+        return ans;
     }
 }
