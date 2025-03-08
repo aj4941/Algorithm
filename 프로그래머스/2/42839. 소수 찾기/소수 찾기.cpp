@@ -1,66 +1,38 @@
 #include <bits/stdc++.h>
 using namespace std;
-typedef pair<int, int> pii;
-const int N = 10;
-int cache[N], prv[N];
-vector<int> a;
-int n;
-set<int> st;
+bool cache[10];
+string s;
+int ans = 0;
+map<int, bool> chk;
 
-bool calc(int num)
+void calc(string tmp)
 {
-    // cout << num << endl;
-    
-    if (num == 0 || num == 1)
-        return false;
-    
-    for (int i = 2; i * i <= num; i++)
+    int val = stoi(tmp);
+    if (chk.count(val) || val <= 1) return;
+    chk[val] = true;
+    for (int i = 2; i * i <= val; i++)
     {
-        if (num % i == 0) 
-            return false;
+        if (val % i == 0) 
+            return;
     }
-    return true;
+    ans++;
 }
 
-void dfs(int idx)
+void dfs(string res)
 {
-    if (idx == n)
-    {
-        vector<pii> tmp;
-        for (int i = 0; i < n; i++)
-        {
-            if (prv[i] == -1) continue;
-            tmp.push_back({ prv[i], a[i] });
-        }
-        
-        if (tmp.size() > 0)
-        {
-            sort(tmp.begin(), tmp.end());
-            int val = 0;
-            for (auto to : tmp)
-                val = val * 10 + to.second;
-            
-            if (calc(val))
-                st.insert(val);
-        }
-        return;
-    }
-    
-    prv[idx] = -1;
-    dfs(idx + 1);
-    
-    for (int i = 0; i < n; i++)
+    if (res != "") calc(res);
+    for (int i = 0; i < s.size(); i++)
     {
         if (cache[i]) continue;
-        cache[i] = 1; prv[idx] = i;
-        dfs(idx + 1);
-        cache[i] = 0; prv[idx] = -1; 
+        cache[i] = true;
+        dfs(res + s[i]);
+        cache[i] = false;
     }
 }
 
 int solution(string number) 
 {
-    for (auto to : number) a.push_back(to - '0');
-    n = a.size(); dfs(0);
-    return st.size();
+    s = number;
+    dfs("");
+    return ans;
 }
